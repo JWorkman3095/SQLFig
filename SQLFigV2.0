@@ -1,0 +1,159 @@
+
+--Figure 1-12
+SELECT InvoiceNumber, InvoiceDate, InvoiceTotal, PaymentTotal, CreditTotal,  
+	InvoiceTotal - PaymentTotal - CreditTotal AS BalanceDue
+FROM Invoices
+Where InvoiceTotal - PaymentTotal - CreditTotal > 0
+ORDER BY InvoiceDate;
+
+--Figure 1-13
+Select VendorName, InvoiceNumber, InvoiceDate, InvoiceTotal
+FROM Vendors INNER JOIN Invoices
+	ON Vendors.VendorID = Invoices.VendorID
+WHERE InvoiceTotal >= 500
+ORDER BY VendorName, InvoiceTotal DESC;
+
+--Figure 1-14
+--INSERT INTO Invoices (VendorID, InvoiceNumber, InvoiceDate, 
+--	InvoiceTotal, TermsID, InvoiceDueDate)
+--VALUES (12, '3289175', '2/18/2020', 165, 3, '3/18/2020');
+
+--UPDATE Invoices
+--SET CreditTotal = 35.89
+--WHERE InvoiceNumber = '367447';
+
+--UPDATE Invoices
+--SET InvoiceDueDate = InvoiceDueDate + 30
+--WHERE TermsID = 4;
+
+--DELETE From Invoices
+--WHERE InvoiceNumber = '4-342-8069';
+
+--DELETE From Invoices
+--WHERE InvoiceTotal - PaymentTotal - CreditTotal = 0;
+
+--Figure 1-15
+SELECT InvoiceNumber, InvoiceDate, InvoiceTotal,
+	InvoiceTotal - PaymentTotal - CreditTotal AS BalanceDue
+FROM Invoices
+WHERE InvoiceTotal - PaymentTotal - CreditTotal > 0
+--WHERE 'BalanceDue' > 0 ***WHY NOT THIS***
+ORDER BY InvoiceDate;
+
+/*
+Aurthor: Joel Murach
+Date: 1/20/2020
+*/
+SELECT InvoiceNumber, InvoiceDate, InvoiceTotal,
+	InvoiceTotal - PaymentTotal - CreditTotal AS BalanceDue
+	--The fourth column calcuates the balance due for each invoice
+FROM Invoices;
+
+--Figure 1-16
+
+--CREATE VIEW VendorMin AS
+--	SELECT VendorName, VendorState, VendorPhone
+--	FROM Vendors;
+--**Already a VendorMin Create in this DB**
+
+SELECT * FROM VendorMin 
+WHERE VendorState = 'CA'
+ORDER BY VendorName;
+
+--Figure 1-17
+--CREATE PROCEDURE spVendorsByState @StateVar char(2) AS
+--	SELECT VendorName, VendorState, VendorPhone
+--	FROM Vendors
+--	WHERE VendorState = @StateVar
+--	ORDER BY VendorName;
+--Commands completed successfully. Completion time: 2022-01-21T21:21:09.2738640-05:00
+
+EXEC spVendorsBYState 'CA';
+
+--Chapter 2 **
+
+--Chapter 3
+--Figure 3-2
+SELECT *
+FROM Invoices; 
+
+SELECT InvoiceNumber, InvoiceDate, InvoiceTotal FROM Invoices
+ORDER BY InvoiceTotal; 
+
+SELECT InvoiceID, InvoiceTotal, CreditTotal  + PaymentTotal AS TotalCredit
+FROM Invoices
+WHERE InvoiceID = 17
+
+SELECT InvoiceNumber, InvoiceDate, InvoiceTotal
+FROM Invoices
+WHERE InvoiceDate BETWEEN '2020-01-01' AND '2020-03-01'
+ORDER BY InvoiceDate;
+
+SELECT InvoiceNumber, InvoiceDate, InvoiceTotal
+FROM Invoices
+WHERE InvoiceTotal > 50000;
+
+--Figure 3-3 Defining
+--Figure 3-4
+SELECT InvoiceNumber AS [Invoice Number], InvoiceDate AS Date,
+	InvoiceTotal AS Total
+FROM Invoices
+
+SELECT [Invoice Number] = InvoiceNumber, Date = InvoiceDate,
+	Total = InvoiceTotal 
+FROM Invoices;
+
+SELECT InvoiceNumber, InvoiceDate, InvoiceTotal, 
+	InvoiceTotal - PaymentTotal - CreditTotal 
+FROM Invoices;
+
+--Figure 3-5
+SELECT VendorCity, VendorState, VendorCity + VendorState 
+FROM Vendors;
+
+SELECT VendorName,
+	VendorCity + ', ' + VendorState + ' ' + VendorZipCode AS Address
+FROM Vendors
+
+SELECT VendorName + '''s Address: ',
+	VendorCity + ', ' + VendorState + ' ' VendorZipCode
+FROM Vendors
+
+SELECT VendorCity, VendorState, VendorCity + VendorState
+FROM Vendors
+
+SELECT VendorName,
+VendorCity + ', ' + VendorState + ' ' + VendorZipCode AS Address 
+FROM Vendors;
+
+--Figure 3-6
+SELECT InvoiceTotal, PaymentTotal, CreditTotal,
+	InvoiceTotal - PaymentTotal - CreditTotal AS BalanceDue
+FROM Invoices;
+
+SELECT InvoiceID,
+	InvoiceID + 7 * 3 AS OrderOfPrescedence,
+	(InvoiceID + 7) * 3 AS AddFirst
+FROM Invoices
+
+SELECT InvoiceID,
+	InvoiceID / 10 AS Quotient,
+	InvoiceID % 10 AS Remainder
+FROM Invoices
+ORDER BY InvoiceID;
+
+--Figure 3-7
+SELECT VendorContactFName, VendorContactLName,
+	LEFT(VendorContactFName, 1) +
+	LEFT(VendorContactLName, 1) AS Initials
+FROM Vendors;
+
+ SELECT 'Invoice: #' + InvoiceNumber
+	+ ', dated ' + CONVERT(char(8), PaymentDate, 1)
+	+ ' for $' + CONVERT(varchar(9), PaymentTotal, 1) 
+FROM Invoices;
+
+SELECT InvoiceDate,
+	GETDATE() AS 'Today''s Date',
+	DATEDIFF(day, InvoiceDate, GETDATE()) AS Age 
+FROM Invoices;
