@@ -1,0 +1,71 @@
+--SQLFig
+--Figure 1-12
+SELECT InvoiceNumber, InvoiceDate, InvoiceTotal, PaymentTotal, CreditTotal,  
+	InvoiceTotal - PaymentTotal - CreditTotal AS BalanceDue
+FROM Invoices
+Where InvoiceTotal - PaymentTotal - CreditTotal > 0
+ORDER BY InvoiceDate;
+
+--Figure 1-13
+Select VendorName, InvoiceNumber, InvoiceDate, InvoiceTotal
+FROM Vendors INNER JOIN Invoices
+	ON Vendors.VendorID = Invoices.VendorID
+WHERE InvoiceTotal >= 500
+ORDER BY VendorName, InvoiceTotal DESC;
+
+--Figure 1-14
+--INSERT INTO Invoices (VendorID, InvoiceNumber, InvoiceDate, 
+--	InvoiceTotal, TermsID, InvoiceDueDate)
+--VALUES (12, '3289175', '2/18/2020', 165, 3, '3/18/2020');
+
+--UPDATE Invoices
+--SET CreditTotal = 35.89
+--WHERE InvoiceNumber = '367447';
+
+--UPDATE Invoices
+--SET InvoiceDueDate = InvoiceDueDate + 30
+--WHERE TermsID = 4;
+
+--DELETE From Invoices
+--WHERE InvoiceNumber = '4-342-8069';
+
+--DELETE From Invoices
+--WHERE InvoiceTotal - PaymentTotal - CreditTotal = 0;
+
+--Figure 1-15
+SELECT InvoiceNumber, InvoiceDate, InvoiceTotal,
+	InvoiceTotal - PaymentTotal - CreditTotal AS BalanceDue
+FROM Invoices
+WHERE InvoiceTotal - PaymentTotal - CreditTotal > 0
+--WHERE 'BalanceDue' > 0 ***WHY NOT THIS***
+ORDER BY InvoiceDate;
+
+/*
+Aurthor: Joel Murach
+Date: 1/20/2020
+*/
+SELECT InvoiceNumber, InvoiceDate, InvoiceTotal,
+	InvoiceTotal - PaymentTotal - CreditTotal AS BalanceDue
+	--The fourth column calcuates the balance due for each invoice
+FROM Invoices;
+
+--Figure 1-16
+
+--CREATE VIEW VendorMin AS
+--	SELECT VendorName, VendorState, VendorPhone
+--	FROM Vendors;
+--**Already a VendorMin Create in this DB**
+
+SELECT * FROM VendorMin 
+WHERE VendorState = 'CA'
+ORDER BY VendorName;
+
+--Figure 1-17
+--CREATE PROCEDURE spVendorsByState @StateVar char(2) AS
+--	SELECT VendorName, VendorState, VendorPhone
+--	FROM Vendors
+--	WHERE VendorState = @StateVar
+--	ORDER BY VendorName;
+--Commands completed successfully. Completion time: 2022-01-21T21:21:09.2738640-05:00
+
+EXEC spVendorsBYState 'CA';
