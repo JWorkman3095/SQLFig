@@ -1,4 +1,4 @@
-----USE master;
+----USE master; from class today
 
 ----CREATE DataBase Sales;
 
